@@ -1,0 +1,23 @@
+﻿<Window x:Class="ES_Socket.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ES_Socket"
+        mc:Ignorable="d"
+        Title="Socket in C#" Height="450" Width="800">
+    <Grid>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Name="txtIp"/>
+        <TextBlock HorizontalAlignment="Left" Margin="146,10,0,0" TextWrapping="Wrap" Text="IP" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Name="txtPort"/>
+        <TextBlock HorizontalAlignment="Left" Margin="146,59,0,0" TextWrapping="Wrap" Text="Port" VerticalAlignment="Top"/>
+        <Button Content="Crea porta" HorizontalAlignment="Left" Margin="204,22,0,0" VerticalAlignment="Top" Width="100" Height="44" Name="btnCreaSocket" Click="btnCreaSocket_Click"/>
+        <TextBox HorizontalAlignment="Left" Height="132" Margin="10,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Name="txtMsg"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,146,0,0" TextWrapping="Wrap" Text="Messaggio" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Invia" HorizontalAlignment="Left" Margin="229,233,0,0" VerticalAlignment="Top" Width="75" Name="btnInvia" IsEnabled="False" Click="btnInvia_Click"/>
+        <Label HorizontalAlignment="Left" Margin="518,175,0,0" VerticalAlignment="Top"/>
+        <Label Content="Storico" HorizontalAlignment="Left" Margin="405,22,0,0" VerticalAlignment="Top" Height="374" Width="362" Name="lblRicevi" FontFamily="Franklin Gothic Book" Background="LightYellow"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="374" Margin="405,22,0,0" VerticalAlignment="Top" Width="362"/>
+
+    </Grid>
+</Window>
