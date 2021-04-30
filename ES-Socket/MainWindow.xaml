@@ -9,7 +9,7 @@
     <Grid>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Name="txtIp"/>
         <TextBlock HorizontalAlignment="Left" Margin="146,10,0,0" TextWrapping="Wrap" Text="IP" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Name="txtPort"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,59,0,0" TextWrapping="Wrap" Text="56000" VerticalAlignment="Top" Width="120" Name="txtPort" IsReadOnly="True"/>
         <TextBlock HorizontalAlignment="Left" Margin="146,59,0,0" TextWrapping="Wrap" Text="Port" VerticalAlignment="Top"/>
         <Button Content="Crea porta" HorizontalAlignment="Left" Margin="204,22,0,0" VerticalAlignment="Top" Width="100" Height="44" Name="btnCreaSocket" Click="btnCreaSocket_Click"/>
         <TextBox HorizontalAlignment="Left" Height="132" Margin="10,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Name="txtMsg"/>

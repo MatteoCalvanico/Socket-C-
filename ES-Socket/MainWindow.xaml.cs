@@ -80,7 +80,7 @@ namespace ES_Socket
         private void btnInvia_Click(object sender, RoutedEventArgs e)
         {
             string ipAddress = txtIp.Text;
-            if (txtIp.Text == null)
+            if (txtIp.Text == "" || txtIp.Text == " " || txtIp.Text == null)
             {
                 MessageBox.Show("Errore");
             }
