@@ -31,16 +31,40 @@ namespace ES_Socket
 
         private void btnCreaSocket_Click(object sender, RoutedEventArgs e)
         {
-            IPEndPoint sourceSocket = new IPEndPoint(IPAddress.Parse("10.73.0.5"),56000);
+            string MyIp;
 
+            //Controlla se la text box del proprio ind. IP è vuota oppure no; se è vuota prende in automatico l'ind. IP della macchina
+            if(string.IsNullOrEmpty(txtMyIp.Text) == true || string.IsNullOrWhiteSpace(txtMyIp.Text) == true)
+            {
+                MyIp = Dns.GetHostName();
+                IPAddress[] iphostentry = Dns.GetHostAddresses(MyIp);
+                foreach (IPAddress ip in iphostentry)
+                {
+                    MyIp = ip.ToString();
+                }
+                txtMyIp.Text = MyIp;
+            }
+            else
+            {
+                MyIp = txtMyIp.Text;
+            }
 
-            //btn per invio abilitato
-            btnInvia.IsEnabled = true;
-            btnCreaSocket.IsEnabled = false;
+            //Controllo textBox ind. IP
+            if (string.IsNullOrEmpty(MyIp) == true || string.IsNullOrWhiteSpace(MyIp) == true || controlloIP(MyIp) == false)
+            {
+                MessageBox.Show("IP sbagliato", "IP sbagliato");
+            }else
+            {
+                IPEndPoint sourceSocket = new IPEndPoint(IPAddress.Parse(MyIp), 56000);
 
-            //creazione Thread per controllare la comunicazione
-            Thread ricezione = new Thread(new ParameterizedThreadStart(SocketReceive));
-            ricezione.Start(sourceSocket);
+                //btn per invio abilitato
+                btnInvia.IsEnabled = true;
+                btnCreaSocket.IsEnabled = false;
+
+                //creazione Thread per controllare la comunicazione
+                Thread ricezione = new Thread(new ParameterizedThreadStart(SocketReceive));
+                ricezione.Start(sourceSocket);
+            }
         }
 
         public async void SocketReceive(object sockSource)
@@ -70,7 +94,7 @@ namespace ES_Socket
 
                         this.Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            lblRicevi.Content = message; //Usiamo il Dispatcher per lavorare nel Thread con elemnti WPF
+                            lstMsg.Items.Add(message); //Usiamo il Dispatcher per lavorare nel Thread con elemnti WPF e con la lista possiamo vedere tutti i messaggi
                         }));
                     }
                 }
@@ -80,14 +104,15 @@ namespace ES_Socket
         private void btnInvia_Click(object sender, RoutedEventArgs e)
         {
             string ipAddress = txtIp.Text;
-            if (txtIp.Text == "" || txtIp.Text == " " || txtIp.Text == null)
-            {
-                MessageBox.Show("Errore");
-            }
-            //TODO => aggungere controllo ip e porta !
-            int port = int.Parse(txtPort.Text);
 
-            SocketSend(IPAddress.Parse(ipAddress), port, txtMsg.Text);
+            if (string.IsNullOrEmpty(ipAddress) == true || string.IsNullOrWhiteSpace(ipAddress) == true || controlloIP(ipAddress) == false)
+            {
+                MessageBox.Show("IP sbagliato", "IP sbagliato");
+            }else
+            {
+                int port = int.Parse(txtPort.Text);
+                SocketSend(IPAddress.Parse(ipAddress), port, txtMsg.Text);
+            }
         }
 
         public void SocketSend(IPAddress dest, int destPort, string message)
@@ -99,6 +124,28 @@ namespace ES_Socket
             IPEndPoint remote_endpoint = new IPEndPoint(dest, destPort);
 
             s.SendTo(byteSend, remote_endpoint);
+        }
+
+        private static bool controlloIP(string ipAddress)
+        {
+            bool ok = false;
+
+            try
+            {
+                IPAddress address;
+                ok = IPAddress.TryParse(ipAddress, out address);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return ok;
+        }
+
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("parte da fare");
         }
     }
 }
