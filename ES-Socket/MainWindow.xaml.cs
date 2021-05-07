@@ -27,6 +27,7 @@ namespace ES_Socket
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void btnCreaSocket_Click(object sender, RoutedEventArgs e)
@@ -50,22 +51,22 @@ namespace ES_Socket
             }
 
             //Controllo textBox ind. IP
-            if (string.IsNullOrEmpty(MyIp) == true || string.IsNullOrWhiteSpace(MyIp) == true || controlloIP(MyIp) == false)
+            if(string.IsNullOrEmpty(MyIp) == true || string.IsNullOrWhiteSpace(MyIp) == true || controlloIP(MyIp) == false)
             {
                 MessageBox.Show("IP sbagliato", "IP sbagliato");
-            }else
+            }else if (string.IsNullOrEmpty(txtPort.Text) == true || string.IsNullOrWhiteSpace(txtPort.Text) == true || (int.Parse(txtPort.Text) > 65535) == true)
             {
-                IPEndPoint sourceSocket = new IPEndPoint(IPAddress.Parse(MyIp), 56000);
+                MessageBox.Show("Porta sbagliata", "Porta sbagliata");
+            }
+            else
+            {
+                IPEndPoint sourceSocket = new IPEndPoint(IPAddress.Parse(MyIp), int.Parse(txtPort.Text));
 
                 //btn per invio abilitato
                 btnInvia.IsEnabled = true;
                 btnCreaSocket.IsEnabled = false;
-
-                //creazione Thread per controllare la comunicazione
-                Thread ricezione = new Thread(new ParameterizedThreadStart(SocketReceive));
-                ricezione.Start(sourceSocket);
             }
-        }
+}
 
         public async void SocketReceive(object sockSource)
         {
@@ -94,7 +95,7 @@ namespace ES_Socket
 
                         this.Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            lstMsg.Items.Add(message); //Usiamo il Dispatcher per lavorare nel Thread con elemnti WPF e con la lista possiamo vedere tutti i messaggi
+                            lstMsg.Items.Add(message + " -Ricevuto"); //Usiamo il Dispatcher per lavorare nel Thread con elemnti WPF e con la lista possiamo vedere tutti i messaggi
                         }));
                     }
                 }
@@ -108,7 +109,11 @@ namespace ES_Socket
             if (string.IsNullOrEmpty(ipAddress) == true || string.IsNullOrWhiteSpace(ipAddress) == true || controlloIP(ipAddress) == false)
             {
                 MessageBox.Show("IP sbagliato", "IP sbagliato");
-            }else
+            }else if(string.IsNullOrEmpty(txtPort.Text) == true || string.IsNullOrWhiteSpace(txtPort.Text) == true || (int.Parse(txtPort.Text) > 65535) == true)
+            {
+                MessageBox.Show("Porta sbagliata", "Porta sbagliata");
+            }
+            else
             {
                 int port = int.Parse(txtPort.Text);
                 SocketSend(IPAddress.Parse(ipAddress), port, txtMsg.Text);
@@ -124,6 +129,7 @@ namespace ES_Socket
             IPEndPoint remote_endpoint = new IPEndPoint(dest, destPort);
 
             s.SendTo(byteSend, remote_endpoint);
+            lstMsg.Items.Add(message + " -Tu");
         }
 
         private static bool controlloIP(string ipAddress)
@@ -145,7 +151,19 @@ namespace ES_Socket
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("parte da fare");
+            lstMsg.Items.Clear();
+            txtIp.Clear();
+            txtMsg.Clear();
+            txtMyIp.Clear();
+            txtPort.Clear();
+            btnInvia.IsEnabled = false;
+            btnCreaSocket.IsEnabled = true;
+            MessageBox.Show("Reset fatto");
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
